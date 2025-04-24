@@ -47,9 +47,8 @@ camera.load(camera_info)
 gaussian_model = GaussianModel().load(model_path)
 renderer = Renderer(gaussian_model, camera)
 
-baseline = 2  # Baseline distance for the camera
 # Define camera center and target point
-camera_center = [5, 0, baseline]
+camera_center = [5, 0, 0]
 look_at_point = [-0.09409162, -0.23857478, -0.04885437]
 
 # Compute rotation using look-at
