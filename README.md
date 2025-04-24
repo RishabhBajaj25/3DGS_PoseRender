@@ -13,7 +13,7 @@ https://github.com/guaMass/3DGS_PoseRender.git --recursive
 ```
 
 ## How to use
-If you can train your own 3DGS model, please use that enviroment to run the `render_img.ipynb`. If you just want to get the rendered iamge from a specific camera pose, you need 
+If you can train your own 3DGS model, please use that enviroment to run the `render_img.ipynb`. If you just want to get the rendered image from a specific camera pose, you only need 
 ```
 cd diff-gaussian-rasterization
 python setup.py install
