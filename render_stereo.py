@@ -29,6 +29,7 @@ def look_at_rotation(eye, target, up=[0, 1, 0]):
 # Load model and camera
 model_path = "/home/rishabh/projects/gaussian-splatting/output/bunny_v3/point_cloud/iteration_30000/point_cloud.ply"
 center = o3d.io.read_point_cloud(model_path).get_center()
+center_h = np.append(center, 1)
 print("Target for rendering:", center)
 
 save_dir = osp.join(osp.dirname(osp.dirname(osp.dirname(model_path))), "custom_renders")
@@ -43,8 +44,8 @@ save_path = osp.join(save_dir, "rendered_viewR.png")
 camera = Camera()
 
 camera_info = {
-    'width': 1686,
-    'height': 1123,
+    'width': 1686 * 2,
+    'height': 1123 * 2,
     'position': [-1.5443377426409022, -1.4137908143237163, 3.674152242878439],
     'rotation': [[-0.9215275422393244, 0.010545073091083492, 0.3881697957438905],
                  [0.31512363252549563, 0.6044180028448614, 0.7316939073553678],
@@ -65,7 +66,7 @@ camera_center = [5, 0, baseline]
 # Circle parameters
 center = np.array([1, 0, 0])
 radius = 5
-theta = np.linspace(0, 2 * np.pi, 100)
+theta = np.linspace(0, 2 * np.pi, 50)
 
 # Compute points on the circle
 x = center[0] + radius * np.cos(theta)
@@ -81,8 +82,7 @@ for count, camera_center in enumerate(circle_xyz):
     L_camera_c = camera_center
     # Compute rotation using look-at
     L_rotation = look_at_rotation(L_camera_c, center)
-    L_position = L_camera_c
-    renderer.update(L_position, L_rotation)
+    renderer.update(L_camera_c, L_rotation)
     L_im = renderer.render()
 
     # Convert image to numpy array
@@ -91,11 +91,13 @@ for count, camera_center in enumerate(circle_xyz):
     # Save the image
     plt.imsave(osp.join(LR_save_dir, f"rendered_view_{count}_L.png"), L_im_np)
 
-    R_camera_c = L_camera_c + np.array([0, 0, baseline])
+    right_vector = L_rotation[:,0]
+
+    R_camera_c = L_camera_c + baseline * right_vector
+
     # Compute rotation using look-at
     R_rotation = look_at_rotation(R_camera_c, center)
-    R_position = R_camera_c
-    renderer.update(R_position, R_rotation)
+    renderer.update(R_camera_c, R_rotation)
     R_im = renderer.render()
 
     # Convert image to numpy array
