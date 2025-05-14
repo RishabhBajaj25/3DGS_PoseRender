@@ -22,11 +22,11 @@ camera.load(camera_info)
 gaussian_model = GaussianModel().load(model_path)
 
 renderer = Renderer(gaussian_model, camera)
-position = [-2,-2,-1]
-rotation = [[1, 0, 0],
-            [0, 1, 0],
-            [0, 0, 1]]
-renderer.update(position,rotation)
+# position = [-2,-2,-1]
+# rotation = [[1, 0, 0],
+#             [0, 1, 0],
+#             [0, 0, 1]]
+# renderer.update(position,rotation)
 
 im = renderer.render()
 plt.imshow(im.detach().cpu().numpy().transpose(1, 2, 0))
